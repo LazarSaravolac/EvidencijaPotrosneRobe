@@ -14,6 +14,45 @@ import evidencija.Burad;
 
 public class BuradDAO {
 	
+public static Burad getBureNazivKolicina(Connection conn,int id) {
+		String naziv=null;
+		double kolicina=0;
+		Burad bure=new Burad();
+		Statement stmt = null;
+		ResultSet rset = null;
+		try {String query="SELECT naziv,otpis FROM Burad where id=" + id;
+		stmt=conn.createStatement();
+		rset=stmt.executeQuery(query);
+		while(rset.next()) {
+			naziv=rset.getString(1);
+			kolicina=rset.getDouble(2);
+			bure.setNaziv(naziv);
+			bure.setOtpis(kolicina);
+		}
+		
+		
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				rset.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return bure;
+	}
+	
+	
+	
 	public static Burad getBure(Connection conn,int id) {
 		
 		Burad bure=new Burad();
@@ -103,7 +142,7 @@ public class BuradDAO {
 
 			Statement stmt = null;
 			ResultSet rset = null;
-			try {String query="SELECT id,naziv,tezina,stiglo,zakaceno FROM Burad WHERE not prazno=1";
+			try {String query="SELECT id,naziv,tezina,stiglo,zakaceno FROM Burad WHERE prazno is null or prazno=0";
 			stmt=conn.createStatement();
 			rset=stmt.executeQuery(query);
 			while(rset.next()) {
@@ -201,6 +240,7 @@ public static boolean addDane(Connection conn,int dani,int id) {
 		Statement stmt = null;
 		
 		try {
+			dani=dani+1;
 			String query="INSERT INTO `pivaras`.`burad` (`dani`) VALUES('" +dani+ "')";
 			String q="UPDATE `pivaras`.`burad` SET `dani`='" + dani + "' WHERE `id`='"+ id +"';";
 //			String q="UPDATE `skara`.`burad` SET `istoceno`='" + istek + "',`prazno`='1' WHERE `id`='"+ id +"';";
@@ -236,6 +276,29 @@ public static boolean unosKacenja(Connection conn,Date datum,int id) {
 	return false;
 }
 
+
+public static boolean updateOtpis(Connection conn,double kolicina,int id) {
+	
+	Statement stmt = null;
+	
+	try {
+//		String query="INSERT INTO `piva`.`burad` (`naziv`,`tezina`,`stiglo`) VALUES('" + bure.getNaziv()+ "',"+ bure.getTezina()+ ",'"+ bure.getStiglo()+"')";
+//		String q="UPDATE `skara`.`burad` SET `istoceno`='" + istek + "',`prazno`='1' WHERE `id`='"+ id +"';";
+		String q="UPDATE `pivaras`.`burad` SET `otpis`='"+kolicina+"' WHERE `id`='"+ id+"';";
+		stmt=conn.createStatement();
+		return stmt.executeUpdate(q)==1;
+		
+	}catch(SQLException ex) {
+		System.out.println("Greska pri SQL upitu");
+		ex.printStackTrace();
+	}finally {
+		try {stmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+		
+	}
+	
+	return false;
+}
+
 public static boolean uK(Connection conn,Date datum,int id) {
 	
 	Statement stmt = null;
@@ -258,14 +321,14 @@ public static boolean uK(Connection conn,Date datum,int id) {
 	return false;
 }
 
-public static boolean uR(Connection conn,Date datum,int id,double kolicina,double kg) {
+public static boolean uR(Connection conn,Date datum,int id,double kg) {
 	
 	Statement stmt = null;
 	
 	try {
 //		String query="INSERT INTO `piva`.`burad` (`naziv`,`tezina`,`stiglo`) VALUES('" + bure.getNaziv()+ "',"+ bure.getTezina()+ ",'"+ bure.getStiglo()+"')";
 //		String q="UPDATE `skara`.`burad` SET `istoceno`='" + istek + "',`prazno`='1' WHERE `id`='"+ id +"';";
-		String q="UPDATE `pivaras`.`burad` SET `istoceno`='"+datum+"',otpis='"+ kolicina+"',tezinaP='"+kg+"' WHERE `id`='"+ id+"';";
+		String q="UPDATE `pivaras`.`burad` SET `istoceno`='"+datum+"',tezinaP='"+kg+"' WHERE `id`='"+ id+"';";
 		stmt=conn.createStatement();
 		return stmt.executeUpdate(q)==1;
 		

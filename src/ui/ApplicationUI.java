@@ -38,16 +38,20 @@ public class ApplicationUI {
 	
 	public static void meni() {
 		
-		System.out.println("1. prikaz buradi");
-		System.out.println("2.Unesi bure");
-		System.out.println("3.unesi datum kacenja");
-		System.out.println("4.unesi datum raskacenja");
-		System.out.println("5.Trenutno na stanju");
-		System.out.println("6.prikaz otpisa");
-		System.out.println("7.suma otpisa na odredjen dan");
+//		System.out.println("1. prikaz buradi");
+		System.out.println("1.Prikazi");
+		System.out.println("2.Unosi");
+		
+		System.out.println("0. Izlaz");
+//		System.out.println("2.Unesi bure");
+//		System.out.println("3.unesi datum kacenja");
+//		System.out.println("4.unesi datum raskacenja");
+//		System.out.println("5.Trenutno na stanju");
+//		System.out.println("6.prikaz otpisa");
+//		System.out.println("7.otpisi na odredjen dan");
 //		System.out.println("7.Unesite Otpis");
-		System.out.println("8. otpisi za odredjen period");
-		System.out.println("9.unesi otpis na ovaj dan");
+//		System.out.println("8. otpisi za odredjen period");
+//		System.out.println("9.unesi otpis na ovaj dan");
 //		System.out.println("3. dodavanje poziva");
 //		System.out.println("4. statistika");
 	}
@@ -62,34 +66,35 @@ public class ApplicationUI {
 		odluka=PomocnaKlasa.ocitajCeoBroj();
 		switch(odluka) {
 		case 0:
-			System.out.println("Izadji iz programa");
+			System.out.println("Izlaz iz programa");
 			break;
 		case 1:
-			BuradUI.ispisSvihPiva();
+//			BuradUI.ispisSvihPiva();
+			PrikaziUI.meniUI();
 			break;
 		case 2:
-			BuradUI.unesiteBure();
+			UnosiUI.meniUI();
 			break;
 		case 3:
-			BuradUI.unesiDatumKacenja();
+//			BuradUI.unesiDatumKacenja();
 			break;
 		case 4:
-			BuradUI.unesiDatumIsteka();
+//			BuradUI.unesiDatumIsteka();
 			break;
 		case 5:
-			BuradUI.trenutnoStanje();
+//			BuradUI.trenutnoStanje();
 			break;
 		case 6:
-			OtpisUI.ispisSvihOtpisa();
+//			OtpisUI.ispisSvihOtpisa();
 			break;
 		case 7:
-			OtpisUI.ispisOtpisaNaDan();
+//			OtpisUI.ispisOtpisaNaDan();
 			break;
 		case 8:
-			OtpisUI.ispisOtpisaNaPeriod();
+//			OtpisUI.ispisOtpisaNaPeriod();
 			break;
 		case 9:
-			OtpisUI.unesiNaOvajDan();
+//			OtpisUI.unesiNaOvajDan();
 			break;
 		}
 	}

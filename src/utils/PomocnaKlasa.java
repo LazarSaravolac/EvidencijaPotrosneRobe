@@ -21,16 +21,16 @@ public class PomocnaKlasa {
 		if(msc.length()==1) {
 			msc="0"+msc;
 		}
-		System.out.println(dan);
-		System.out.println(godina);
-		System.out.println(mesec);
+//		System.out.println(dan);
+//		System.out.println(godina);
+//		System.out.println(mesec);
 		String datumString=""+dan+"."+msc+"."+godina+".";
 		return datumString;
 	}
 	
 	public static Date tacanDatum() {
 		Date datum = null;
-			
+		while (datum == null) {
 			String tekst = PomocnaKlasa.ukupnaVrednost();
 			try {
 				java.util.Date utilDatum = DATUMP.parse(tekst);
@@ -38,7 +38,7 @@ public class PomocnaKlasa {
 			} catch (ParseException ex) {
 				System.out.println("GRESKA - Pogresno unsesena vrednost, pokusajte ponovo: ");
 			}
-		
+		}
 		return datum;
 	}
 	public static SimpleDateFormat DATUMP = new SimpleDateFormat("dd.MM.yyyy.");
@@ -135,7 +135,7 @@ public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.")
 		while (datum == null) {
 			String tekst = sc.nextLine();
 			try {
-				java.util.Date utilDatum = DATUM.parse(tekst);
+				java.util.Date utilDatum = DATUMP.parse(tekst);
 				datum = new Date(utilDatum.getTime());
 			} catch (ParseException ex) {
 				System.out.println("GRESKA - Pogresno unsesena vrednost, pokusajte ponovo: ");

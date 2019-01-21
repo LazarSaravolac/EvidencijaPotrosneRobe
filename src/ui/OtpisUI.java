@@ -3,8 +3,9 @@ package ui;
 import java.sql.Date;
 import java.util.List;
 
-
+import dao.BuradDAO;
 import dao.OtpisDAO;
+import evidencija.Burad;
 import evidencija.Otpis;
 import utils.PomocnaKlasa;
 
@@ -16,11 +17,15 @@ public class OtpisUI {
 		System.out.println();
 		System.out.println("=======================================================================================================================================");
 		for (Otpis otpis: savOtpis) {
+			String datumS="";
+			if(otpis.getDatumOtpisa()!=null) {
+				datumS=PomocnaKlasa.DATUMP.format(otpis.getDatumOtpisa());
+			}
 			System.out.printf("%-10s %-20s %-10s %-35s \n", 
 					otpis.getId(), 
 					otpis.getNaziv(),
 					otpis.getKolicina(),
-					otpis.getDatumOtpisa()
+					datumS
 					); 
 		System.out.println("=======================================================================================================================================");
 			
@@ -30,11 +35,16 @@ public class OtpisUI {
 }
 	
 	public static void unesiNaOvajDan() {
-		System.out.println("Unesi naziv");
-		String naziv=PomocnaKlasa.ocitajTekst();
+		System.out.println("Unesi id bureta za otpis piva");
+		int id= PomocnaKlasa.ocitajCeoBroj();
 		System.out.println("Unesi kolicinu");
 		double kolicina=PomocnaKlasa.ocitajRealanBrojDouble();
-		OtpisDAO.addOtpis(ApplicationUI.getConn(), naziv, kolicina);
+		Burad bure=BuradDAO.getBureNazivKolicina(ApplicationUI.getConn(), id);
+		System.out.println(bure.getOtpis() +  "  " + bure.getNaziv());
+		bure.setOtpis(bure.getOtpis()+kolicina);
+		System.out.println(bure.getOtpis());
+		OtpisDAO.addOtpis(ApplicationUI.getConn(), bure.getNaziv(),kolicina);
+		BuradDAO.updateOtpis(ApplicationUI.getConn(), bure.getOtpis(), id);
 	}
 	
 	public static void ispisOtpisaNaDan() {
@@ -52,11 +62,15 @@ public class OtpisUI {
 		System.out.println();
 		System.out.println("=======================================================================================================================================");
 		for (Otpis otpis: savOtpis) {
+			String datumS="";
+			if(otpis.getDatumOtpisa()!=null) {
+				datumS=PomocnaKlasa.DATUMP.format(otpis.getDatumOtpisa());
+			}
 			System.out.printf("%-10s %-20s %-10s %-35s \n", 
 					otpis.getId(), 
 					otpis.getNaziv(),
 					otpis.getKolicina(),
-					otpis.getDatumOtpisa()
+					datumS
 					); 
 		System.out.println("=======================================================================================================================================");
 			
@@ -82,11 +96,15 @@ public class OtpisUI {
 		System.out.println();
 		System.out.println("=======================================================================================================================================");
 		for (Otpis otpis: savOtpis) {
+			String datumS="";
+			if(otpis.getDatumOtpisa()!=null) {
+				datumS=PomocnaKlasa.DATUMP.format(otpis.getDatumOtpisa());
+			}
 			System.out.printf("%-10s %-20s %-10s %-35s \n", 
 					otpis.getId(), 
 					otpis.getNaziv(),
 					otpis.getKolicina(),
-					otpis.getDatumOtpisa()
+					datumS
 					); 
 		System.out.println("=======================================================================================================================================");
 			

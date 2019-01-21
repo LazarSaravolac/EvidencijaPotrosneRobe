@@ -15,7 +15,9 @@ public class BuradUI {
 	public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
 	public static void ispisSvihPiva() {
 		List<Burad>svaBurad=BuradDAO.getBurad(ApplicationUI.getConn());
-		System.out.printf("%-10s %-20s %-10s %-25s  %-25s %-25s %-15s  %-15s %-15s %-15s","id","naziv","tezina","stiglo","zakaceno","istoceno","broj dana","prazno(kg)","prazno","otpis");
+		System.out.println();
+		System.out.println();
+		System.out.printf("%-10s %-20s %-10s %-25s  %-25s %-25s %-15s  %-15s %-15s %-15s","id","naziv","tezina","stiglo","zakaceno","istoceno","broj dana","prazno(kg)","prazno","otpis(L)");
 		System.out.println();
 		System.out.println("===========================================================================================================================================================================================================");
 		
@@ -24,11 +26,21 @@ public class BuradUI {
 			Date istoceno=burad.getIstoceno();
 			String kacenjeS=null;
 			String istocenoS=null;
+			String praznoS="";
+			if(burad.isPrazno()==true) {
+				praznoS="prazno";
+			}else {
+				praznoS="nije prazno";
+			}
 			if(kacenje!=null) {
 				kacenjeS=PomocnaKlasa.DATUMP.format(burad.getKacenje());
+			}else {
+				kacenjeS="";
 			}
 			if(istoceno!=null) {
 				istocenoS=PomocnaKlasa.DATUMP.format(burad.getIstoceno());
+			}else {
+				istocenoS="";
 			}
 			System.out.printf("%-10s %-20s %-10s %-25s  %-25s %-25s %-15s %-15s %-15s %-15s \n", 
 					burad.getId(), 
@@ -39,28 +51,35 @@ public class BuradUI {
 					istocenoS,
 					burad.getDani(),
 					burad.getTezinaPrazno(),
-					burad.isPrazno(),
+					praznoS,
 					burad.getOtpis()
 					); 
 			System.out.println("===========================================================================================================================================================================================================");
-			
-					
-
 		}
+		System.out.println();
 	}
 	
 	public static void trenutnoStanje() {
 		List<Burad>svaBurad=BuradDAO.trenutnoStanje(ApplicationUI.getConn());
+	
 		System.out.printf("%-10s %-20s %-10s %-35s %-35s","id","naziv","tezina","stiglo","zakaceno");
 		System.out.println();
 		System.out.println("=================================================================================================================================");
 		for (Burad burad: svaBurad) {
+			String kacenjeS="";
+			if(burad.getKacenje()!=null) {
+				kacenjeS=PomocnaKlasa.DATUMP.format(burad.getKacenje());
+			}
+			String stigloS="";
+			if(burad.getStiglo()!=null) {
+				stigloS=PomocnaKlasa.DATUMP.format(burad.getStiglo());
+			}
 			System.out.printf("%-10s %-20s %-10s %-35s %-35s \n", 
 					burad.getId(), 
 					burad.getNaziv(),
 					burad.getTezina(),
-					burad.getStiglo(), 
-					burad.getKacenje()
+					stigloS, 
+					kacenjeS
 					); 
 				
 					
@@ -68,17 +87,19 @@ public class BuradUI {
 		}
 	}
 	public static void unesiteBure() {
-		System.out.println("Unesi naziv");
+		System.out.println("Unesi naziv:");
 		String naziv=PomocnaKlasa.ocitajTekst();
 		System.out.println(naziv);
-		System.out.println("Unesi tezinu");
+		System.out.println("Unesi tezinu:");
 		double tezina=PomocnaKlasa.ocitajRealanBrojDouble();
 		System.out.println(tezina);
-		System.out.println("Unesite datum prispeca");
+		System.out.println("Unesite datum prispeca:");
 		Date datumP=PomocnaKlasa.ocitajDatumPravi();
 		System.out.println(datumP);
 		Burad bure=new Burad(naziv, tezina, datumP);
 		BuradDAO.addPivo(ApplicationUI.getConn(),bure);
+		System.out.println();
+		System.out.println();
 		
 	}
 	
@@ -98,6 +119,9 @@ public class BuradUI {
 		BuradDAO.uK(ApplicationUI.getConn(), kacenje, id);
 		int dani=BuradDAO.getDane(ApplicationUI.getConn(), id);
 		BuradDAO.addDane(ApplicationUI.getConn(), dani, id);
+		System.out.println();
+		System.out.println();
+		
 	}
 	
 
@@ -117,11 +141,11 @@ public class BuradUI {
 		
 		System.out.println("Unesi tezinu praznog bureta");
 		double praznoKG=PomocnaKlasa.ocitajRealanBrojDouble();
-		double kolicina=OtpisDAO.getOtpisPeriodSuma(ApplicationUI.getConn(), b.getKacenje(),raskacenje);
-		System.out.println(b.getKacenje() + " " + raskacenje);
-		BuradDAO.uR(ApplicationUI.getConn(), raskacenje, id,kolicina,praznoKG);
+//		double kolicina=OtpisDAO.getOtpisPeriodSuma(ApplicationUI.getConn(), b.getKacenje(),raskacenje);
+//		System.out.println(b.getKacenje() + " " + raskacenje);
+		BuradDAO.uR(ApplicationUI.getConn(), raskacenje, id,praznoKG);
 		int dani=BuradDAO.getDane(ApplicationUI.getConn(), id);
-		System.out.println(dani);
+//		System.out.println(dani);
 		BuradDAO.addDane(ApplicationUI.getConn(), dani, id);
 		BuradDAO.prazno(ApplicationUI.getConn(), id);
 	}
